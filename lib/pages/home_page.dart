@@ -19,7 +19,7 @@ class _HomeState extends State<Home> {
       ),
 
       body: FutureBuilder(
-        future: getPeople(),
+        future: getCliente(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return ListView.builder(
@@ -27,7 +27,7 @@ class _HomeState extends State<Home> {
               itemBuilder: (context, index) {
                 return Dismissible(
                   onDismissed: (direction) async {
-                    await deletePeople(snapshot.data?[index]['uid']);
+                    await deleteCliente(snapshot.data?[index]['uid']);
                     snapshot.data?.removeAt(index);
                   },
                   confirmDismiss: (direction) async {
@@ -38,7 +38,7 @@ class _HomeState extends State<Home> {
                         return AlertDialog(
                           // Suggested code may be subject to a license. Learn more: ~LicenseLog:2890425472.
                           title: Text(
-                            "Estas seguro de eliminar a ${snapshot.data?[index]['name']} ",
+                            "Estas seguro de eliminar a ${snapshot.data?[index]['nombre']} ",
                           ),
                           actions: [
                             TextButton(
@@ -69,14 +69,19 @@ class _HomeState extends State<Home> {
                   direction: DismissDirection.endToStart,
                   key: Key(snapshot.data?[index]['uid']),
                   child: ListTile(
-                    title: Text(snapshot.data?[index]['name']),
+                    title: Text(snapshot.data?[index]['nombre']),
                     onTap: (() async {
                       await Navigator.pushNamed(
                         context,
                         "/edit",
                         arguments: {
-                          "name": snapshot.data?[index]['name'],
+                          "nombre": snapshot.data?[index]['nombre'],
                           "uid": snapshot.data?[index]['uid'],
+                          "telefono": snapshot.data?[index]['telefono'],
+                          "direccion": snapshot.data?[index]['direccion'],
+                          "apellidom": snapshot.data?[index]['apellidom'],
+                          "apellidop": snapshot.data?[index]['apellidop'],
+                          "cuenta": snapshot.data?[index]['cuenta'],
                         },
                       );
                       setState(() {});

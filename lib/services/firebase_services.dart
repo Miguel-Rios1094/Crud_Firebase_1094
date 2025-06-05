@@ -2,29 +2,49 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 FirebaseFirestore db = FirebaseFirestore.instance;
 
-Future<List>getPeople() async {
-  List people=[];
-  CollectionReference collectionReferencePeople=db.collection("people");
-  QuerySnapshot queryPeople=await collectionReferencePeople.get();
-  for (var doc in queryPeople.docs) {
+Future<List> getCliente() async {
+  List cliente = [];
+  CollectionReference collectionReferenceCliente = db.collection("cliente");
+  QuerySnapshot queryCliente = await collectionReferenceCliente.get();
+  for (var doc in queryCliente.docs) {
     final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
     final person = {
-      "name": data["name"],
+      "nombre": data["nombre"],
+      "telefono": data["telefono"],
+      "direccion": data["direccion"],
+      "apellidom": data["apellidom"],
+      "apellidop": data["apellidop"],
+      "cuenta": data["cuenta"],
       "uid": doc.id,
     };
-    people.add(person);
+    cliente.add(person);
   }
-  return people;
+  return cliente;
 }
 
-Future<void> addPeople(String name) async {
-  await db.collection("people").add({"name": name});
+Future<void> addCliente(
+  String nombre,
+  String telefono,
+  String direccion,
+  String apellidom,
+  String apellidop,
+  String cuenta,
+) async {
+  await db.collection("cliente").add({"nombre": nombre, "telefono": telefono, "direccion": direccion, "apellidom": apellidom, "apellidop": apellidop, "cuenta": cuenta});
 }
 
-Future<void> updatePeople ( String uid, String newName ) async {
-  await db.collection("people").doc(uid).set({"name": newName});
+Future<void> updateCliente(
+  String uid,
+  String nombre,
+  String telefono,
+  String direccion,
+  String apellidom,
+  String apellidop,
+  String cuenta,
+  ) async {
+  await db.collection("cliente").doc(uid).set({"nombre": nombre, "telefono": telefono, "direccion": direccion, "apellidom": apellidom, "apellidop": apellidop, "cuenta": cuenta});
 }
 
-Future<void> deletePeople ( String uid ) async {
-  await db.collection("people").doc(uid).delete();
+Future<void> deleteCliente(String uid) async {
+  await db.collection("cliente").doc(uid).delete();
 }
